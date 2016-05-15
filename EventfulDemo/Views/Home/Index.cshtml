@@ -13,31 +13,46 @@
 
 <h1>Search Events</h1>
 
-@using (Html.BeginForm("Index", "Home"))
-{
-    @Html.ValidationSummary()
+<div class="well">
+	@using (Html.BeginForm("Index", "Home"))
+	{
+		@Html.ValidationSummary()
 
-    @Html.LabelFor(m => m.Location)
-    @Html.TextBoxFor(m => m.Location)  
+		@Html.LabelFor(m => m.Location)
+		@Html.TextBoxFor(m => m.Location)
 
-    @Html.ValidationMessageFor(m => m.Location)
+		@Html.ValidationMessageFor(m => m.Location)
 
-    <input id="SearchEventsByLocation" name="SearchEventsByLocation" type="submit" value="Seach by Location"/>
-}
+		<input id="SearchEventsByLocation" name="SearchEventsByLocation" type="submit" value="Seach by Location" class="btn btn-primary" />
+	}
+</div>
+<button id="PreviousButton" class="btn btn-primary">Previous</button>
+<button id="NextButton" class="btn btn-primary">Next</button>
 
-<div id="searchResults">
-
-    <!--
-    todo Use jQuery to replace the body of this div
-    todo Use a template to build the HTML
-    todo Just display the first page
-    todo Add paging after 
-    -->
+<div id="SearchResults">
 
 </div>
 
 @section scripts{
-    <script src="~/Scripts/Home/Index.js"></script>
+	<script src="~/Scripts/Home/Index.js"></script>
+	<script id="Template" type="text/x-jsrender">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a href="{{:venue_url}}">{{:title}}</a>
+			</div>
+			<div class="panel-body">
+				{{if (image != null && image.medium != null)}}
+					<img src="{{:image.medium.url}}" height="{{:image.medium.height}}" width="{{:image.medium.width}}" />
+				{{/if}}
+				<div>{{:venue_address}},&nbsp;{{:city_name}},&nbsp;{{:region_abbr}}</div>
+				<div>{{:start_time}}</div>
+				{{if (performers != null)}}
+					<div>{{:performers}}</div>
+				{{/if}}
+				<p>{{:description}}</p>
+			</div>
+		</div>
+	</script>
 }
 
 @*

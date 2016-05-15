@@ -42,6 +42,13 @@ $(document).ready(function () {
             console.log("***********************");
         }
     };
+    var bindJsonToHtmlTemplate = function (eventArray) {
+    	var template = $.templates("#Template");
+    	var htmlOutput = template.render(eventArray);
+
+	    console.log(htmlOutput);
+    	$("#SearchResults").html(htmlOutput);
+    };
     var searchEvents = function (event) {
         var location = $("#Location").val();
         var queryString = "?" + authenticationString + "&location=" + location;
@@ -52,8 +59,7 @@ $(document).ready(function () {
                 displayHeader(eventJson);
                 var eventArray = eventJson.events.event;
                 displayEvents(eventArray);
-
-                // bind to template
+                bindJsonToHtmlTemplate(eventArray);
             },
             jsonp: "callback",
             dataType: "jsonp"
@@ -67,4 +73,6 @@ $(document).ready(function () {
     };
 
     $("#SearchEventsByLocation").click(searchEvents);
+	$("PreviousButton").click();
+	$("NextButton").click();
 });
