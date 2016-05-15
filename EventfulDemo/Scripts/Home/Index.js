@@ -5,6 +5,7 @@ $(function () {
 	var pageNumber = 1;
 	var maxPageNumber;
 	var pageSize = 5;
+
 	// page elements
 	var $template = $.templates("#EventTemplate");
 	var $searchResults = $("#SearchResults");
@@ -55,7 +56,15 @@ $(function () {
 				$searchResults.empty().html(htmlOutput);
 			},
 			jsonp: "callback",
-			dataType: "jsonp"
+			dataType: "jsonp",
+			global: true,
+			beforeSend: function() {
+				$("#LoadingDiv").show();
+			},
+			complete: function() {
+				$("#LoadingDiv").hide();
+				toggleNextPreviousButtonVisibility(true);
+			}
 		};
 
 		console.log(url);
@@ -81,18 +90,9 @@ $(function () {
 	};
 
 	$location.focus();
-	//$loadingDiv.hide();
+	//$("#LoadingDiv").hide()
+	$loadingDiv.hide();
 	toggleNextPreviousButtonVisibility(false);
-
-	// not working
-	$(document)
-	  .ajaxStart(function () {
-			$loadingDiv.show();
-			toggleNextPreviousButtonVisibility(true);
-	  })
-	  .ajaxStop(function () {
-	  	$loadingDiv.hide();
-	  });
 
 	$searchEventsByLocation.click(function (event) {
 		getEventsPage(pageNumber);
