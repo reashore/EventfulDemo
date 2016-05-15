@@ -1,7 +1,8 @@
-﻿using System.Web.Mvc;
-using EventfulDemo.Models;
+﻿
+using System.Web.Mvc;
+using EventfulDemo.Web.Models;
 
-namespace EventfulDemo.Controllers
+namespace EventfulDemo.Web.Controllers
 {
     public class HomeController : Controller
     {

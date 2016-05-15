@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace EventfulDemo.Models
+namespace EventfulDemo.Web.Models
 {
     public class SearchViewModel
     {
