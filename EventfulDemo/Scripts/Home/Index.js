@@ -34,8 +34,8 @@ $(function () {
 		var location = $location.val();
 		var queryString = "?app_key=" + authenticationCode;
 		queryString += "&page_size=" + pageSize;
-		queryString += "&sort_order='date'";
-		queryString += "&sort_direction='ascending'";
+		queryString += "&sort_order=date";
+		queryString += "&sort_direction=ascending";
 		queryString += "&location=" + location;
 		queryString += "&page_number=" + pageNumber;
 		var url = baseUrl + queryString;
