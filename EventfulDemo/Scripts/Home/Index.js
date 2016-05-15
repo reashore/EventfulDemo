@@ -1,19 +1,21 @@
 ﻿
 $(function () {
-	var pageNumber = 1;
-	var maxPageNumber;
 	var baseUrl = "http://api.eventful.com/json/events/search";
 	var authenticationCode = "Mt5gmQJNpc3RLpMj";
+	var pageNumber = 1;
+	var maxPageNumber;
 	var pageSize = 5;
-	var template = $.templates("#EventTemplate");
 	// page elements
+	var $template = $.templates("#EventTemplate");
 	var $searchResults = $("#SearchResults");
-	var $loadingDiv = $('#LoadingDiv');
+	var $loadingDiv = $("#LoadingDiv");
 	var $location = $("#Location");
+	var $searchEventsByLocation = $("#SearchEvents");
 	var $previousButtonAtTop = $("#PreviousButtonAtTop");
 	var $previousButtonAtBottom = $("#PreviousButtonAtBottom");
 	var $nextButtonAtTop = $("#NextButtonAtTop");
 	var $nextButtonAtBottom = $("#NextButtonAtBottom");
+	var $pagingInfo = $("#PagingInfo");
 
 	var toggleNextPreviousButtonVisibility = function (enable) {
 		if (enable) {
@@ -32,19 +34,24 @@ $(function () {
 	var getEventsPage = function (pageNumber)
 	{
 		var location = $location.val();
-		var queryString = "?app_key=" + authenticationCode;
+		var sortOrder = $("#SortOrder:checked").val();
+		var sortDirection = $("#SortDirection:checked").val();
+		var queryString;
+
+		queryString  = "?app_key=" + authenticationCode;
 		queryString += "&page_size=" + pageSize;
-		queryString += "&sort_order=date";
-		queryString += "&sort_direction=ascending";
+		queryString += "&sort_order=" + sortOrder;
+		queryString += "&sort_direction=" + sortDirection;
 		queryString += "&location=" + location;
 		queryString += "&page_number=" + pageNumber;
+
 		var url = baseUrl + queryString;
 		var ajaxSettings = {
 			url: url,
 			success: function (eventJson) {
 				maxPageNumber = eventJson.page_count;
 				var eventArray = eventJson.events.event;
-				var htmlOutput = template.render(eventArray);
+				var htmlOutput = $template.render(eventArray);
 				$searchResults.empty().html(htmlOutput);
 			},
 			jsonp: "callback",
@@ -60,6 +67,8 @@ $(function () {
 		if (pageNumber > maxPageNumber) {
 			pageNumber = maxPageNumber;
 		}
+		var pagingInfo = "Page " + pageNumber + " of " + maxPageNumber;
+		$pagingInfo.text(pagingInfo);
 		getEventsPage(pageNumber);
 	};
 
@@ -72,19 +81,20 @@ $(function () {
 	};
 
 	$location.focus();
-	$loadingDiv.hide();
-	//toggleNextPreviousButtonVisibility(false);
+	//$loadingDiv.hide();
+	toggleNextPreviousButtonVisibility(false);
 
+	// not working
 	$(document)
 	  .ajaxStart(function () {
-			$loading.show();
+			$loadingDiv.show();
 			toggleNextPreviousButtonVisibility(true);
 	  })
 	  .ajaxStop(function () {
-	  	$loading.hide();
+	  	$loadingDiv.hide();
 	  });
 
-	$("#SearchEventsByLocation").click(function (event) {
+	$searchEventsByLocation.click(function (event) {
 		getEventsPage(pageNumber);
 		event.preventDefault();
 	});

@@ -12,12 +12,5 @@ namespace EventfulDemo.Web.Controllers
             SearchViewModel searchViewModel = new SearchViewModel();
             return View(searchViewModel);
         }
-
-        //[HttpPost]
-        //public ActionResult Index(string location)
-        //{
-        //    // use location to do a rest search
-        //    return View();
-        //}
     }
 }

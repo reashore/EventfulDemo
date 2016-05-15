@@ -3,12 +3,12 @@
 @model SearchViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Eventful Demo Home Page";
 }
 
 <div class="jumbotron">
     <h1>Eventful Demo</h1>
-    <p class="lead">Eventful Demo illustrates making REST requests to the Eventful web site</p>
+    <p class="lead">Eventful Demo illustrates REST requests to the Eventful web site</p>
 </div>
 
 <h1>Search Events</h1>
@@ -16,19 +16,60 @@
 <div class="well">
 	@using (Html.BeginForm("Index", "Home"))
 	{
-		@Html.LabelFor(m => m.Location)
-		@Html.TextBoxFor(m => m.Location)
-		@Html.ValidationMessageFor(m => m.Location)
+		<div class="form-group">
+			@Html.LabelFor(m => m.Location)
+			@Html.TextBoxFor(m => m.Location, new {@class="form-control"})
+			@Html.ValidationMessageFor(m => m.Location)
+		</div>
 
-		<input id="SearchEventsByLocation" name="SearchEventsByLocation" type="submit" value="Seach by Location" class="btn btn-primary"/>
+		<label for="SortOrderDiv">Sort Order</label>
+		<div id="SortOrderDiv">
+			<div class="radio">
+				<label>
+					<input type="radio" id="SortOrder" name="SortOrder" value="date"/>
+					Date
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" id="SortOrder" name="SortOrder" value="relevance"/>
+					Relevance
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" id="SortOrder" name="SortOrder" value="popularity" checked/>
+					Popularity
+				</label>
+			</div>
+		</div>
+
+		<label for="SortDirectionDiv">Sort Direction</label>
+		<div id="SortDirectionDiv">
+			<div class="radio">
+				<label>
+					<input type="radio" id="SortDirection" name="SortDirection" value="ascending"/>
+					Ascending
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" id="SortDirection" name="SortDirection" value="descending" checked/>
+					Descending
+				</label>
+			</div>
+		</div>
+		
+		<input id="SearchEvents" name="SearchEvents" type="submit" value="Seach Events" class="btn btn-primary" />
 	}
 </div>
 
 <div id="LoadingDiv">
-	<p>Loading...</p>
+	<img id="AjaxLoadingGif"src="~/Content/Images/ajax-loader.gif" />
 </div>
 
 <button id="PreviousButtonAtTop" class="btn btn-primary">Previous</button>
+<span id="PagingInfo"></span>
 <button id="NextButtonAtTop" class="btn btn-primary">Next</button>
 
 <div id="SearchResults">
