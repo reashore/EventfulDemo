@@ -1,78 +1,70 @@
 ﻿
-//$(document).ready(function () {
 $(function () {
+	var pageNumber = 1;
+	var maxPageNumber;
+	var baseUrl = "http://api.eventful.com/json/events/search";
+	var authenticationCode = "Mt5gmQJNpc3RLpMj";
+	var pageSize = 5;
+	var template = $.templates("#EventTemplate");
+	var getEventsPage = function (pageNumber)
+	{
+		var location = $("#Location").val();
+		var queryString = "?app_key=" + authenticationCode;
+		queryString += "&location=" + location;
+		queryString += "&page_size=" + pageSize;
+		queryString += "&page_number=" + pageNumber;
+		var url = baseUrl + queryString;
+		var ajaxSettings = {
+			url: url,
+			success: function (eventJson) {
+				maxPageNumber = eventJson.page_count;
+				var eventArray = eventJson.events.event;
+				var htmlOutput = template.render(eventArray);
+				$("#SearchResults").empty();
+				$("#SearchResults").html(htmlOutput);
+			},
+			jsonp: "callback",
+			dataType: "jsonp"
+		};
 
-    //var displayHeader = function (eventJson) {
-    //    var totalItems = eventJson.total_items;
-    //    var pageSize = eventJson.page_size;
-    //    var pageNumber = eventJson.page_number;
-    //    var pageCount = eventJson.page_count;
+		console.log(url);
+		$.ajax(ajaxSettings);
+	};
+	var getNextPage = function() {
+		pageNumber += 1;
+		if (pageNumber > maxPageNumber) {
+			pageNumber = maxPageNumber;
+		}
+		getEventsPage(pageNumber);
+	};
+	var getPreviousPage = function() {
+		pageNumber -= 1;
+		if (pageNumber < 1) {
+			pageNumber = 1;
+		}
+		getEventsPage(pageNumber);
+	};
 
-    //    console.log(totalItems);
-    //    console.log(pageSize);
-    //    console.log(pageNumber);
-    //    console.log(pageCount);
-    //    console.log("***********************");
-    //};
-    //var displayEvents = function (eventArray) {
-    //    for (var n = 0; n < eventArray.length; n++) {
-    //        var title = eventArray[n].title;
-    //        var address = eventArray[n].venue_address;
-    //        var city = eventArray[n].city_name;
-    //        var region = eventArray[n].region_name;
-    //        var country = eventArray[n].country_name;
-    //        var startTime = eventArray[n].start_time;
-    //        var description = eventArray[n].description;
-    //        var performers = eventArray[n].performers;
-    //        //var imageUrl = eventArray[n].image.medium.url;
-    //        //var imageHeight = eventArray[n].image.medium.height;
-    //        //var imageWidth = eventArray[n].image.medium.width;
-    //        var venueUrl = eventArray[n].venue_url;
+	$("Location").focus();
 
-    //        console.log(title);
-    //        console.log(address);
-    //        console.log(city);
-    //        console.log(region);
-    //        console.log(country);
-    //        console.log(startTime);
-    //        console.log(description);
-    //        console.log(performers);
-    //        console.log(venueUrl);
-    //        console.log("***********************");
-    //    }
-    //};
-    //var bindEventsToHtmlTemplate = function (eventArray) {
-    //	var template = $.templates("#EventTemplate");
-    //	var htmlOutput = template.render(eventArray);
+	$("#SearchEventsByLocation").click(function (event) {
+		getEventsPage(pageNumber);
+		event.preventDefault();
+	});
 
-    //	$("#SearchResults").html(htmlOutput);
-    //};
-	var searchEvents = function (event) {
-		var baseUrl = "http://api.eventful.com/json/events/search";
-		var authenticationCode = "Mt5gmQJNpc3RLpMj";
-        var location = $("#Location").val();
-        var queryString = "?app_key=" + authenticationCode + "&location=" + location + "&page_size=" + 100;
-        var url = baseUrl + queryString;
-        var ajaxSettings = {
-            url: url,
-            success: function (eventJson) {
-                var eventArray = eventJson.events.event;
-                var template = $.templates("#EventTemplate");
-                var htmlOutput = template.render(eventArray);
-                $("#SearchResults").html(htmlOutput);
-            },
-            jsonp: "callback",
-            dataType: "jsonp"
-        };
+	$("#PreviousButtonAtTop").click(function (event) {
+		getPreviousPage();
+	});
 
-        console.log(url);
-        $.ajax(ajaxSettings);
+	$("#NextButtonAtTop").click(function (event) {
+		getNextPage();
+	});
 
-        //event.preventDefault();
-        return false;
-    };
+	$("#PreviousButtonAtBottom").click(function (event) {
+		getPreviousPage();
+	});
 
-    $("#SearchEventsByLocation").click(searchEvents);
-	$("PreviousButton").click();
-	$("NextButton").click();
+	$("#NextButtonAtBottom").click(function (event) {
+		getNextPage();
+	});
 });
