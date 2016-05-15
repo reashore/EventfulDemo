@@ -6,12 +6,37 @@ $(function () {
 	var authenticationCode = "Mt5gmQJNpc3RLpMj";
 	var pageSize = 5;
 	var template = $.templates("#EventTemplate");
+	// page elements
+	var $searchResults = $("#SearchResults");
+	var $loadingDiv = $('#LoadingDiv');
+	var $location = $("#Location");
+	var $previousButtonAtTop = $("#PreviousButtonAtTop");
+	var $previousButtonAtBottom = $("#PreviousButtonAtBottom");
+	var $nextButtonAtTop = $("#NextButtonAtTop");
+	var $nextButtonAtBottom = $("#NextButtonAtBottom");
+
+	var toggleNextPreviousButtonVisibility = function (enable) {
+		if (enable) {
+			$previousButtonAtTop.show();
+			$nextButtonAtTop.show();
+			$previousButtonAtBottom.show();
+			$nextButtonAtBottom.show();
+		} else {
+			$previousButtonAtTop.hide();
+			$nextButtonAtTop.hide();
+			$previousButtonAtBottom.hide();
+			$nextButtonAtBottom.hide();
+		}
+	};
+
 	var getEventsPage = function (pageNumber)
 	{
-		var location = $("#Location").val();
+		var location = $location.val();
 		var queryString = "?app_key=" + authenticationCode;
-		queryString += "&location=" + location;
 		queryString += "&page_size=" + pageSize;
+		queryString += "&sort_order='date'";
+		queryString += "&sort_direction='ascending'";
+		queryString += "&location=" + location;
 		queryString += "&page_number=" + pageNumber;
 		var url = baseUrl + queryString;
 		var ajaxSettings = {
@@ -20,8 +45,7 @@ $(function () {
 				maxPageNumber = eventJson.page_count;
 				var eventArray = eventJson.events.event;
 				var htmlOutput = template.render(eventArray);
-				$("#SearchResults").empty();
-				$("#SearchResults").html(htmlOutput);
+				$searchResults.empty().html(htmlOutput);
 			},
 			jsonp: "callback",
 			dataType: "jsonp"
@@ -30,6 +54,7 @@ $(function () {
 		console.log(url);
 		$.ajax(ajaxSettings);
 	};
+
 	var getNextPage = function() {
 		pageNumber += 1;
 		if (pageNumber > maxPageNumber) {
@@ -37,6 +62,7 @@ $(function () {
 		}
 		getEventsPage(pageNumber);
 	};
+
 	var getPreviousPage = function() {
 		pageNumber -= 1;
 		if (pageNumber < 1) {
@@ -45,26 +71,37 @@ $(function () {
 		getEventsPage(pageNumber);
 	};
 
-	$("Location").focus();
+	$location.focus();
+	$loadingDiv.hide();
+	//toggleNextPreviousButtonVisibility(false);
+
+	$(document)
+	  .ajaxStart(function () {
+			$loading.show();
+			toggleNextPreviousButtonVisibility(true);
+	  })
+	  .ajaxStop(function () {
+	  	$loading.hide();
+	  });
 
 	$("#SearchEventsByLocation").click(function (event) {
 		getEventsPage(pageNumber);
 		event.preventDefault();
 	});
 
-	$("#PreviousButtonAtTop").click(function (event) {
+	$previousButtonAtTop.click(function (event) {
 		getPreviousPage();
 	});
 
-	$("#NextButtonAtTop").click(function (event) {
+	$nextButtonAtTop.click(function (event) {
 		getNextPage();
 	});
 
-	$("#PreviousButtonAtBottom").click(function (event) {
+	$previousButtonAtBottom.click(function (event) {
 		getPreviousPage();
 	});
 
-	$("#NextButtonAtBottom").click(function (event) {
+	$nextButtonAtBottom.click(function (event) {
 		getNextPage();
 	});
 });
