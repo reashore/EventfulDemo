@@ -32,22 +32,32 @@
 
 @section scripts{
 	<script src="~/Scripts/Home/Index.js"></script>
-	<script id="Template" type="text/x-jsrender">
+	<script id="EventTemplate" type="text/x-jsrender">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<a href="{{:venue_url}}">{{:title}}</a>
 			</div>
 			<div class="panel-body">
-				{{if (image != null && image.medium != null)}}
-					<img src="{{:image.medium.url}}" height="{{:image.medium.height}}" width="{{:image.medium.width}}" />
+				{{if image && image.medium }}
+					{{for image.medium}}
+						<img src="{{:url}}" height="{{:height}}" width="{{:width}}" />
+					{{/for}}
 				{{/if}}
-				<div>{{:venue_address}},&nbsp;{{:city_name}},&nbsp;{{:region_abbr}}</div>
-				<div>{{:start_time}}</div>
-				{{if (performers != null)}}
-					<div>{{:performers}}</div>
+				<div><strong>{{:venue_address}},&nbsp;{{:city_name}},&nbsp;{{:region_abbr}}</strong></div>
+				<div><strong>{{:start_time}}</strong></div>
+				{{if performers}}
+					{{for performers}}
+						<div>
+							{{:name}}
+						</div>
+				
+					{{/for}}
 				{{/if}}
-					<p>{{:description}}</p>
-				</div>
+				{{if description}}
+					<div class="well">
+						<p>{{:description}}</p>
+					</div>
+				{{/if}}
 			</div>
 		</div>
 	</script>

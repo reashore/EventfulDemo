@@ -1,8 +1,7 @@
 ﻿
-$(document).ready(function () {
+//$(document).ready(function () {
+$(function () {
 
-    var baseUrl = "http://api.eventful.com/json/events/search";
-    var authenticationString = "app_key=Mt5gmQJNpc3RLpMj";
     //var displayHeader = function (eventJson) {
     //    var totalItems = eventJson.total_items;
     //    var pageSize = eventJson.page_size;
@@ -42,24 +41,25 @@ $(document).ready(function () {
     //        console.log("***********************");
     //    }
     //};
-    var bindJsonToHtmlTemplate = function (eventArray) {
-    	var template = $.templates("#Template");
-    	var htmlOutput = template.render(eventArray);
+    //var bindEventsToHtmlTemplate = function (eventArray) {
+    //	var template = $.templates("#EventTemplate");
+    //	var htmlOutput = template.render(eventArray);
 
-	    console.log(htmlOutput);
-    	$("#SearchResults").html(htmlOutput);
-    };
-    var searchEvents = function (event) {
+    //	$("#SearchResults").html(htmlOutput);
+    //};
+	var searchEvents = function (event) {
+		var baseUrl = "http://api.eventful.com/json/events/search";
+		var authenticationCode = "Mt5gmQJNpc3RLpMj";
         var location = $("#Location").val();
-        var queryString = "?" + authenticationString + "&location=" + location;
+        var queryString = "?app_key=" + authenticationCode + "&location=" + location + "&page_size=" + 100;
         var url = baseUrl + queryString;
         var ajaxSettings = {
             url: url,
             success: function (eventJson) {
-                //displayHeader(eventJson);
                 var eventArray = eventJson.events.event;
-                //displayEvents(eventArray);
-                bindJsonToHtmlTemplate(eventArray);
+                var template = $.templates("#EventTemplate");
+                var htmlOutput = template.render(eventArray);
+                $("#SearchResults").html(htmlOutput);
             },
             jsonp: "callback",
             dataType: "jsonp"
