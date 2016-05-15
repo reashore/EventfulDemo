@@ -1,11 +1,11 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("EventfulDemo")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("EventfulDemo")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Dirac Software Inc.")]
 [assembly: AssemblyProduct("EventfulDemo")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
