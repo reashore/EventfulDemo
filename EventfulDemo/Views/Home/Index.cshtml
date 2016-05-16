@@ -65,7 +65,7 @@
 </div>
 
 <div id="LoadingDiv">
-	<img id="AjaxLoadingGif"src="~/Content/Images/ajax-loader.gif" style="display: block; margin-left: auto; margin-right: auto"/>
+	<img id="AjaxLoadingGif"src="~/Content/Images/ajax-loader.gif" style="display: block; margin-left: auto; margin-right: auto" alt="Loading..."/>
 </div>
 
 <button id="PreviousButtonAtTop" class="btn btn-primary">Previous</button>
@@ -81,6 +81,35 @@
 @section scripts{
 	<script src="~/Scripts/Home/Index.js"></script>
 	<script id="EventTemplate" type="text/x-jsrender">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a href="{{:venue_url}}">{{:title}}</a>
+			</div>
+			<div class="panel-body">
+				{{if image && image.medium }}
+					{{for image.medium}}
+						<img src="{{:url}}" height="{{:height}}" width="{{:width}}" />
+					{{/for}}
+				{{/if}}
+				<div><strong>{{:venue_address}},&nbsp;{{:city_name}},&nbsp;{{:region_abbr}}</strong></div>
+				<div><strong>{{:start_time}}</strong></div>
+				{{if performers}}
+					{{for performers}}
+						<div>
+							{{:name}}
+						</div>
+				
+					{{/for}}
+				{{/if}}
+				{{if description}}
+					<div class="well">
+						<p>{{:description}}</p>
+					</div>
+				{{/if}}
+			</div>
+		</div>
+	</script>
+	<script id="PerformersTemplate" type="text/x-jsrender">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<a href="{{:venue_url}}">{{:title}}</a>

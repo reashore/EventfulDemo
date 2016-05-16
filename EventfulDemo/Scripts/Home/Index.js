@@ -62,8 +62,9 @@ $(function () {
 				$("#LoadingDiv").show();
 			},
 			complete: function() {
-				$("#LoadingDiv").hide();
+				$loadingDiv.hide();
 				toggleNextPreviousButtonVisibility(true);
+				setPagingInfo();
 			}
 		};
 
@@ -71,13 +72,16 @@ $(function () {
 		$.ajax(ajaxSettings);
 	};
 
+	var setPagingInfo = function() {
+		var pagingInfo = "Page " + pageNumber + " of " + maxPageNumber;
+		$pagingInfo.text(pagingInfo);
+	}
+	
 	var getNextPage = function() {
 		pageNumber += 1;
 		if (pageNumber > maxPageNumber) {
 			pageNumber = maxPageNumber;
 		}
-		var pagingInfo = "Page " + pageNumber + " of " + maxPageNumber;
-		$pagingInfo.text(pagingInfo);
 		getEventsPage(pageNumber);
 	};
 
@@ -90,7 +94,6 @@ $(function () {
 	};
 
 	$location.focus();
-	//$("#LoadingDiv").hide()
 	$loadingDiv.hide();
 	toggleNextPreviousButtonVisibility(false);
 
