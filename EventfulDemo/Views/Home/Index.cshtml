@@ -68,14 +68,14 @@
 	<img id="AjaxLoadingGif"src="~/Content/Images/ajax-loader.gif" style="display: block; margin-left: auto; margin-right: auto" alt="Loading..."/>
 </div>
 
-<button id="PreviousButtonAtTop" class="btn btn-primary">Previous</button>
+<button id="PreviousButtonAtTop" class="btn btn-primary">Prev</button>
 <span id="PagingInfo"></span>
 <button id="NextButtonAtTop" class="btn btn-primary">Next</button>
 
 <div id="SearchResults">
 </div>
 
-<button id="PreviousButtonAtBottom" class="btn btn-primary">Previous</button>
+<button id="PreviousButtonAtBottom" class="btn btn-primary">Prev</button>
 <button id="NextButtonAtBottom" class="btn btn-primary">Next</button>
 
 @section scripts{
@@ -96,38 +96,13 @@
 				{{if performers}}
 					{{for performers}}
 						<div>
-							{{:name}}
-						</div>
-				
-					{{/for}}
-				{{/if}}
-				{{if description}}
-					<div class="well">
-						<p>{{:description}}</p>
-					</div>
-				{{/if}}
-			</div>
-		</div>
-	</script>
-	<script id="PerformersTemplate" type="text/x-jsrender">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<a href="{{:venue_url}}">{{:title}}</a>
-			</div>
-			<div class="panel-body">
-				{{if image && image.medium }}
-					{{for image.medium}}
-						<img src="{{:url}}" height="{{:height}}" width="{{:width}}" />
-					{{/for}}
-				{{/if}}
-				<div><strong>{{:venue_address}},&nbsp;{{:city_name}},&nbsp;{{:region_abbr}}</strong></div>
-				<div><strong>{{:start_time}}</strong></div>
-				{{if performers}}
-					{{for performers}}
-						<div>
-							{{:name}}
-						</div>
-				
+							{{if performer.url && performer.name}}
+								<a href="{{:performer.url}}" target="_blank">{{:performer.name}}</a>
+							{{/if}}
+							{{if performer.short_bio}}
+								<p>{{:performer.short_bio}}</p>			
+							{{/if}}				
+						</div>				
 					{{/for}}
 				{{/if}}
 				{{if description}}

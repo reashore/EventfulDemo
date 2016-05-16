@@ -4,7 +4,7 @@ $(function () {
 	var authenticationCode = "Mt5gmQJNpc3RLpMj";
 	var pageNumber = 1;
 	var maxPageNumber;
-	var pageSize = 5;
+	var pageSize = 10;
 
 	// page elements
 	var $template = $.templates("#EventTemplate");
@@ -39,6 +39,11 @@ $(function () {
 		var sortDirection = $("#SortDirection:checked").val();
 		var queryString;
 
+		if ($.trim(location) == "") {
+			alert('Location is missing');
+			return;
+		}
+
 		queryString  = "?app_key=" + authenticationCode;
 		queryString += "&page_size=" + pageSize;
 		queryString += "&sort_order=" + sortOrder;
@@ -49,12 +54,6 @@ $(function () {
 		var url = baseUrl + queryString;
 		var ajaxSettings = {
 			url: url,
-			success: function (eventJson) {
-				maxPageNumber = eventJson.page_count;
-				var eventArray = eventJson.events.event;
-				var htmlOutput = $template.render(eventArray);
-				$searchResults.empty().html(htmlOutput);
-			},
 			jsonp: "callback",
 			dataType: "jsonp",
 			global: true,
@@ -65,6 +64,12 @@ $(function () {
 				$loadingDiv.hide();
 				toggleNextPreviousButtonVisibility(true);
 				setPagingInfo();
+			},
+			success: function (eventJson) {
+				maxPageNumber = eventJson.page_count;
+				var eventArray = eventJson.events.event;
+				var htmlOutput = $template.render(eventArray);
+				$searchResults.empty().html(htmlOutput);
 			}
 		};
 
