@@ -125,4 +125,10 @@ $(function () {
 	$nextButtonAtBottom.click(function (event) {
 		getNextPage();
 	});
+
+	$location.change(function(event) {
+		if ($.trim($location.val()) !== "") {
+			$missingLocation.hide();
+		}
+	})
 });
