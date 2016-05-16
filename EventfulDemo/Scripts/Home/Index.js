@@ -17,6 +17,7 @@ $(function () {
 	var $nextButtonAtTop = $("#NextButtonAtTop");
 	var $nextButtonAtBottom = $("#NextButtonAtBottom");
 	var $pagingInfo = $("#PagingInfo");
+	var $missingLocation = $("#MissingLocation");
 
 	var toggleNextPreviousButtonVisibility = function (enable) {
 		if (enable) {
@@ -40,7 +41,7 @@ $(function () {
 		var queryString;
 
 		if ($.trim(location) == "") {
-			alert('Location is missing');
+			$missingLocation.show();
 			return;
 		}
 
@@ -98,11 +99,13 @@ $(function () {
 		getEventsPage(pageNumber);
 	};
 
+	$missingLocation.hide();
 	$location.focus();
 	$loadingDiv.hide();
 	toggleNextPreviousButtonVisibility(false);
 
 	$searchEventsByLocation.click(function (event) {
+		$missingLocation.hide();
 		getEventsPage(pageNumber);
 		event.preventDefault();
 	});

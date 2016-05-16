@@ -1,44 +1,40 @@
 ﻿
-@using EventfulDemo.Web.Models;
-@model SearchViewModel
-
 @{
-    ViewBag.Title = "Eventful Demo Home Page";
+	ViewBag.Title = "Eventful Demo Home Page";
 }
 
 <div class="jumbotron">
-    <h1>Eventful Demo</h1>
-    <p class="lead">Eventful Demo illustrates REST requests to the Eventful web site</p>
+	<h1>Eventful Demo</h1>
+	<p class="lead">Eventful Demo illustrates REST requests to the Eventful web site</p>
 </div>
 
 <h1>Search Events</h1>
 
 <div class="well">
-	@using (Html.BeginForm("Index", "Home"))
-	{
+	<form>
 		<div class="form-group">
-			@Html.LabelFor(m => m.Location)
-			@Html.TextBoxFor(m => m.Location, new {@class="form-control"})
-			@Html.ValidationMessageFor(m => m.Location)
+			<label for="Location">Location</label>
+			<input type="text" id="Location" name="Location" class="form-control" value="Vancouver" />
+			<span id="MissingLocation" style="color: red">Location is missing</span>
 		</div>
 
 		<label for="SortOrderDiv">Sort Order</label>
 		<div id="SortOrderDiv">
 			<div class="radio">
 				<label>
-					<input type="radio" id="SortOrder" name="SortOrder" value="date"/>
+					<input type="radio" id="SortOrder" name="SortOrder" value="date" />
 					Date
 				</label>
 			</div>
 			<div class="radio">
 				<label>
-					<input type="radio" id="SortOrder" name="SortOrder" value="relevance"/>
+					<input type="radio" id="SortOrder" name="SortOrder" value="relevance" />
 					Relevance
 				</label>
 			</div>
 			<div class="radio">
 				<label>
-					<input type="radio" id="SortOrder" name="SortOrder" value="popularity" checked/>
+					<input type="radio" id="SortOrder" name="SortOrder" value="popularity" checked />
 					Popularity
 				</label>
 			</div>
@@ -48,35 +44,40 @@
 		<div id="SortDirectionDiv">
 			<div class="radio">
 				<label>
-					<input type="radio" id="SortDirection" name="SortDirection" value="ascending"/>
+					<input type="radio" id="SortDirection" name="SortDirection" value="ascending" />
 					Ascending
 				</label>
 			</div>
 			<div class="radio">
 				<label>
-					<input type="radio" id="SortDirection" name="SortDirection" value="descending" checked/>
+					<input type="radio" id="SortDirection" name="SortDirection" value="descending" checked />
 					Descending
 				</label>
 			</div>
 		</div>
-		
+
 		<input id="SearchEvents" name="SearchEvents" type="submit" value="Seach Events" class="btn btn-primary" />
-	}
+	</form>
+
 </div>
 
 <div id="LoadingDiv">
-	<img id="AjaxLoadingGif"src="~/Content/Images/ajax-loader.gif" style="display: block; margin-left: auto; margin-right: auto" alt="Loading..."/>
+	<img id="AjaxLoadingGif" src="~/Content/Images/ajax-loader.gif" style="display: block; margin-left: auto; margin-right: auto" alt="Loading..." />
 </div>
 
-<button id="PreviousButtonAtTop" class="btn btn-primary">Prev</button>
-<span id="PagingInfo"></span>
-<button id="NextButtonAtTop" class="btn btn-primary">Next</button>
+<div>
+	<button id="PreviousButtonAtTop" class="btn btn-primary">Prev</button>
+	<span id="PagingInfo"></span>
+	<button id="NextButtonAtTop" class="btn btn-primary">Next</button>
+</div>
 
 <div id="SearchResults">
 </div>
 
-<button id="PreviousButtonAtBottom" class="btn btn-primary">Prev</button>
-<button id="NextButtonAtBottom" class="btn btn-primary">Next</button>
+<div>
+	<button id="PreviousButtonAtBottom" class="btn btn-primary bottommargin">Prev</button>
+	<button id="NextButtonAtBottom" class="btn btn-primary bottommargin">Next</button>
+</div>
 
 @section scripts{
 	<script src="~/Scripts/Home/Index.js"></script>
@@ -91,20 +92,24 @@
 						<img src="{{:url}}" height="{{:height}}" width="{{:width}}" />
 					{{/for}}
 				{{/if}}
+
 				<div><strong>{{:venue_address}},&nbsp;{{:city_name}},&nbsp;{{:region_abbr}}</strong></div>
 				<div><strong>{{:start_time}}</strong></div>
+
 				{{if performers}}
 					{{for performers}}
 						<div>
 							{{if performer.url && performer.name}}
 								<a href="{{:performer.url}}" target="_blank">{{:performer.name}}</a>
 							{{/if}}
+
 							{{if performer.short_bio}}
-								<p>{{:performer.short_bio}}</p>			
-							{{/if}}				
-						</div>				
+								<p>{{:performer.short_bio}}</p>
+							{{/if}}
+						</div>
 					{{/for}}
 				{{/if}}
+
 				{{if description}}
 					<div class="well">
 						<p>{{:description}}</p>

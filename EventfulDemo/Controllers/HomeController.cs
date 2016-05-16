@@ -1,6 +1,5 @@
 ﻿
 using System.Web.Mvc;
-using EventfulDemo.Web.Models;
 
 namespace EventfulDemo.Web.Controllers
 {
@@ -9,8 +8,7 @@ namespace EventfulDemo.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            SearchViewModel searchViewModel = new SearchViewModel();
-            return View(searchViewModel);
+            return View();
         }
     }
 }
