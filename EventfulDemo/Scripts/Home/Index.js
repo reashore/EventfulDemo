@@ -33,14 +33,19 @@ $(function () {
 		}
 	};
 
-	var getEventsPage = function (pageNumber)
+	var setPagingInfo = function () {
+	    var pagingInfo = "Page " + pageNumber + " of " + maxPageNumber;
+	    $pagingInfo.text(pagingInfo);
+	}
+
+	var getEventsPage = function (pageNum)
 	{
 		var location = $location.val();
 		var sortOrder = $("#SortOrder:checked").val();
 		var sortDirection = $("#SortDirection:checked").val();
 		var queryString;
 
-		if ($.trim(location) == "") {
+		if ($.trim(location) === "") {
 			$missingLocation.show();
 			return;
 		}
@@ -50,7 +55,7 @@ $(function () {
 		queryString += "&sort_order=" + sortOrder;
 		queryString += "&sort_direction=" + sortDirection;
 		queryString += "&location=" + location;
-		queryString += "&page_number=" + pageNumber;
+		queryString += "&page_number=" + pageNum;
 
 		var url = baseUrl + queryString;
 		var ajaxSettings = {
@@ -77,11 +82,6 @@ $(function () {
 		console.log(url);
 		$.ajax(ajaxSettings);
 	};
-
-	var setPagingInfo = function() {
-		var pagingInfo = "Page " + pageNumber + " of " + maxPageNumber;
-		$pagingInfo.text(pagingInfo);
-	}
 	
 	var getNextPage = function() {
 		pageNumber += 1;
@@ -110,25 +110,25 @@ $(function () {
 		event.preventDefault();
 	});
 
-	$previousButtonAtTop.click(function (event) {
+	$previousButtonAtTop.click(function () {
 		getPreviousPage();
 	});
 
-	$nextButtonAtTop.click(function (event) {
+	$nextButtonAtTop.click(function () {
 		getNextPage();
 	});
 
-	$previousButtonAtBottom.click(function (event) {
+	$previousButtonAtBottom.click(function () {
 		getPreviousPage();
 	});
 
-	$nextButtonAtBottom.click(function (event) {
+	$nextButtonAtBottom.click(function () {
 		getNextPage();
 	});
 
-	$location.change(function(event) {
-		if ($.trim($location.val()) !== "") {
-			$missingLocation.hide();
-		}
-	})
+    $location.change(function() {
+        if ($.trim($location.val()) !== "") {
+            $missingLocation.hide();
+        }
+    });
 });
